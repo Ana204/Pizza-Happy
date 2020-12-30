@@ -18,8 +18,13 @@ pizzaJson.map((item, index) => {
     pizzaItem.querySelector('a').addEventListener('click', (e) => {
         e.preventDefault();
 
+        elemento('.pizzaWindowArea').style.opacity = 0;
         elemento('.pizzaWindowArea').style.display = 'flex';
-    })
+        setTimeout(() => {
+        elemento('.pizzaWindowArea').style.opacity = 1;
+        }, 200);
+        
+    });
 
     elemento('.pizza-area').append( pizzaItem);
 });
