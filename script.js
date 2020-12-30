@@ -13,5 +13,13 @@ pizzaJson.map((item, index) => {
     pizzaItem.querySelector('.pizza-item--price').innerHTML = `R$ ${item.price.toFixed(2)}`;
     pizzaItem.querySelector('.pizza-item--name').innerHTML = item.name;
     pizzaItem.querySelector('.pizza-item--desc').innerHTML = item.description;
+
+    //abrindo o modal 
+    pizzaItem.querySelector('a').addEventListener('click', (e) => {
+        e.preventDefault();
+
+        elemento('.pizzaWindowArea').style.display = 'flex';
+    })
+
     elemento('.pizza-area').append( pizzaItem);
 });
