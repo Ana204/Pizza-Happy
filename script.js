@@ -37,7 +37,7 @@ pizzaJson.map((item, index) => {
             size.querySelector('span').innerHTML = pizzaJson[key].sizes[sizeIndex];
         });
 
-        elemento('pizzaInfo--qt').innerHTML = modalQtd;
+        elemento('.pizzaInfo--qt').innerHTML = modalQtd;
         elemento('.pizzaWindowArea').style.opacity = 0;
         elemento('.pizzaWindowArea').style.display = 'flex';
         setTimeout(() => {
@@ -48,3 +48,28 @@ pizzaJson.map((item, index) => {
 
     elemento('.pizza-area').append( pizzaItem);
 });
+
+//evento para fechar o modal 
+function FecharModal(){
+    elemento('.pizzaWindowArea').style.opacity = 0;
+    setTimeout(() => {
+        elemento('.pizzaWindowArea').style.display = 'none';
+    }, 500);
+}
+elementoEncontrado('.pizzaInfo--cancelButton, .pizzaInfo--cancelMobileButton').forEach((item) => {
+    item.addEventListener('click', FecharModal);
+})
+
+//evento para quantidade de pizza
+elemento('.pizzaInfo--qtmenos').addEventListener('click', () => {
+    if(modalQtd > 1){
+        modalQtd--;
+    elemento('.pizzaInfo--qt').innerHTML = modalQtd;
+    }
+});
+
+elemento('.pizzaInfo--qtmais').addEventListener('click', () => {
+    modalQtd++;
+    elemento('.pizzaInfo--qt').innerHTML = modalQtd;
+});
+
