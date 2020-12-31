@@ -37,7 +37,7 @@ pizzaJson.map((item, index) => {
             size.querySelector('span').innerHTML = pizzaJson[key].sizes[sizeIndex];
         });
 
-        elemento.('pizzaInfo--qt').innerHTML = modalQtd;
+        elemento('pizzaInfo--qt').innerHTML = modalQtd;
         elemento('.pizzaWindowArea').style.opacity = 0;
         elemento('.pizzaWindowArea').style.display = 'flex';
         setTimeout(() => {
