@@ -1,4 +1,6 @@
 let modalQtd = 1;
+let cart = [];
+let modalKey = 0;
 //retorna apenas o item 
 const elemento = (item) => document.querySelector(item);
 //retorna um array com os itens que foi encontrado 
@@ -23,7 +25,8 @@ pizzaJson.map((item, index) => {
 
         let key = e.target.closest('.pizza-item').getAttribute('data-key');
         modalQtd = 1;
-        
+        modalKey = key;
+
         //pegando as informações para o modal 
         elemento('.pizzaBig img').src = pizzaJson[key].img;
         elemento('.pizzaInfo h1').innerHTML = pizzaJson[key].name;
@@ -31,7 +34,7 @@ pizzaJson.map((item, index) => {
         elemento('.pizza-item--price').innerHTML = `R$ ${pizzaJson[key].price.toFixed(2)}`;
         elemento('.pizzaInfo--size.selected').classList.remove('selected');
         elementoEncontrado('.pizzaInfo--size').forEach((size, sizeIndex) => {
-            if(sizeIndex == 2){
+            if (sizeIndex == 2) {
                 size.classList.add('selected');
             }
             size.querySelector('span').innerHTML = pizzaJson[key].sizes[sizeIndex];
@@ -41,16 +44,16 @@ pizzaJson.map((item, index) => {
         elemento('.pizzaWindowArea').style.opacity = 0;
         elemento('.pizzaWindowArea').style.display = 'flex';
         setTimeout(() => {
-        elemento('.pizzaWindowArea').style.opacity = 1;
+            elemento('.pizzaWindowArea').style.opacity = 1;
         }, 200);
-        
+
     });
 
-    elemento('.pizza-area').append( pizzaItem);
+    elemento('.pizza-area').append(pizzaItem);
 });
 
 //evento para fechar o modal 
-function FecharModal(){
+function FecharModal() {
     elemento('.pizzaWindowArea').style.opacity = 0;
     setTimeout(() => {
         elemento('.pizzaWindowArea').style.display = 'none';
@@ -62,9 +65,9 @@ elementoEncontrado('.pizzaInfo--cancelButton, .pizzaInfo--cancelMobileButton').f
 
 //evento para quantidade de pizza
 elemento('.pizzaInfo--qtmenos').addEventListener('click', () => {
-    if(modalQtd > 1){
+    if (modalQtd > 1) {
         modalQtd--;
-    elemento('.pizzaInfo--qt').innerHTML = modalQtd;
+        elemento('.pizzaInfo--qt').innerHTML = modalQtd;
     }
 });
 
@@ -72,4 +75,46 @@ elemento('.pizzaInfo--qtmais').addEventListener('click', () => {
     modalQtd++;
     elemento('.pizzaInfo--qt').innerHTML = modalQtd;
 });
+
+//evento para seleção de tamanhos
+elementoEncontrado('.pizzaInfo--size').forEach((size, sizeIndex) => {
+    size.addEventListener('click', (e) => {
+        elemento('.pizzaInfo--size.selected').classList.remove('selected');
+        size.classList.add('selected');
+    });
+});
+
+//pegando informações para colocar ao carrinho de compras 
+elemento('.pizzaInfo--addButton').addEventListener('click', () => {
+    let size = parseInt(elemento('.pizzaInfo--size.selected').getAttribute('data-key'));
+
+    //indentificador do id e do tamanho da pizza
+    let indentifier = pizzaJson[modalKey].id +'@'+size;
+
+    //verificando se o indetificador é igual ao indetificador 
+    let key = cart.findIndex((item) => item.indentifier == indentifier);
+
+    if (key > -1) {
+        cart[key].qt += modalQtd;
+    } else {
+        //adicionando no carrinho de compras 
+        cart.push({
+            indentifier,
+            id: pizzaJson[modalKey].id,
+            size,
+            qt: modalQtd
+        });
+    }
+
+    updateCart();
+    FecharModal();
+});
+
+function updateCart() {
+    if(cart.length > 0){
+        elemento('aside').classList.add('show');
+    } else {
+        elemento('aside').classList.remove('show');
+    }
+}
 
